@@ -60,7 +60,7 @@ aws-cloud-architecture-labs/
 
 | Módulo | Tema | Contenido | Estado |
 |:------:|------|-----------|:------:|
-| 1 | Servidor Web y Servicios Core (EC2, EBS, S3,3.	Conectarse a la instancia de Linux via SSH, Keypair ) | [📁 exam-module-1](./exam-module-1/) | ✅ Completado |
+| 1 | Servidor Web y Servicios Core (EC2, EBS, S3,3.	Conectarse a la instancia de Linux via SSH, Keypair ) | 📁 exam-module-1 | ✅ Completado |
 | 2 | _Próximamente_ | — | ⏳ Pendiente |
 | 3 | _Próximamente_ | — | ⏳ Pendiente |
 
@@ -83,9 +83,9 @@ aws-cloud-architecture-labs/
 
 ## 🧭 Cómo navegar este repositorio
 
-1. Entra a la carpeta del módulo que te interese (por ejemplo, `exam-module-1/`).
-2. Lee su `README.md` para conocer el contexto y los pasos técnicos.
-3. Revisa el PDF de evidencias para ver las capturas y los resultados obtenidos.
+1. **Consulta la documentación técnica:** Revisa este `README.md` para conocer los objetivos, la arquitectura desplegada y los comandos ejecutados.
+2. **Revisa las evidencias prácticas:** Abre el archivo [tinavarela-modulo1-ExamenPractico.pdf](tinavarela-modulo1-ExamenPractico.pdf) para visualizar las capturas de pantalla de la consola de AWS, configuración de Security Groups, terminal SSH, volúmenes EBS y S3.
+
 
 ---
 
