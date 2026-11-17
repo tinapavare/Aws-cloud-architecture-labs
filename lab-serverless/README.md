@@ -3,6 +3,13 @@
 **Objetivo:** Configurar una arquitectura orientada a eventos utilizando Amazon API Gateway, AWS Lambda, Amazon EventBridge y AWS Step Functions, resolviendo la colisión de eventos en un entorno de cuenta compartida mediante la personalización del patrón de enrutamiento.
 
 ---
+## Diseño de Arquitectura
+
+A continuación, se presenta el diagrama de arquitectura diseñado para esta solución, el cual ilustra el flujo de eventos desde la petición HTTP inicial hasta el procesamiento asíncrono en la máquina de estados, destacando el aislamiento del entorno.
+
+![Diagrama de Arquitectura Serverless](./arquitecturaserverless%20(2).png)
+
+---
 
 ## 1. Actualización de la Función Lambda (Aislamiento de Eventos)
 En esta captura se evidencia la modificación del código fuente de la función Lambda inicial (`receive-order-tinavarela`). Para resolver el problema de colisión de eventos en el entorno compartido de AWS, se personalizó el atributo `Source` dentro del método `put_events`. Al asignar el valor unívoco `"demo.pedidos.tinavarela"`, se garantiza que el evento publicado en el bus posea una firma de origen exclusiva, estableciendo el primer paso para una arquitectura completamente aislada.
