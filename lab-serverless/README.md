@@ -1,14 +1,71 @@
-# Laboratorio: Arquitectura Serverless y Aislamiento de Eventos (EventBridge & Step Functions)
+<div align="center">
 
-**Objetivo:** Configurar una arquitectura orientada a eventos utilizando Amazon API Gateway, AWS Lambda, Amazon EventBridge y AWS Step Functions, resolviendo la colisión de eventos en un entorno de cuenta compartida mediante la personalización del patrón de enrutamiento.
+#  Laboratorio: Automatización de solicitudes con API Gateway
+### Orquestación Asíncrona con Amazon EventBridge y AWS Step Functions
+
+<img src="https://img.shields.io/badge/AWS_Cloud-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" />
+<img src="https://img.shields.io/badge/API_Gateway-6D28D9?style=for-the-badge&logo=amazon-apigateway&logoColor=white" />
+<img src="https://img.shields.io/badge/AWS_Lambda-FF9900?style=for-the-badge&logo=awslambda&logoColor=white" />
+<img src="https://img.shields.io/badge/EventBridge-E7157B?style=for-the-badge&logo=amazon-aws&logoColor=white" />
+<img src="https://img.shields.io/badge/Step_Functions-820AD1?style=for-the-badge&logo=amazon-aws&logoColor=white" />
+<img src="https://img.shields.io/badge/Python-3.12-1E293B?style=for-the-badge&logo=python&logoColor=white" />
+<img src="https://img.shields.io/badge/Status-Production_Ready-15803D?style=for-the-badge" />
+
+<p align="center">
+  <b>Objetivo:</b> Configurar una arquitectura orientada a eventos utilizando Amazon API Gateway, AWS Lambda, Amazon EventBridge y AWS Step Functions, resolviendo la colisión de eventos en un entorno de cuenta compartida mediante la personalización del patrón de enrutamiento.
+</p>
+
+</div>
 
 ---
-## Diseño de Arquitectura
+
+---
+##  Diseño de Arquitectura
 
 A continuación, se presenta el diagrama de arquitectura diseñado para esta solución, el cual ilustra el flujo de eventos desde la petición HTTP inicial hasta el procesamiento asíncrono en la máquina de estados, destacando el aislamiento del entorno.
 
-![Diagrama de Arquitectura Serverless](./arquitectura-serverless.drawio.svg)
+<div align="center">
+  <img src="./arquitectura-serverless.drawio.svg" alt="Diagrama de Arquitectura Serverless" width="95%" />
+  <br>
+  <sub><b>Figura 1.</b> Flujo desacoplado de extremo a extremo: Ingesta HTTP, enrutamiento por patrón de origen (<code>demo.pedidos.tinavarela</code>) y máquina de estados.</sub>
+</div>
 
+---
+## 🛠️ Especificaciones Técnicas y Rol de Componentes
+
+| Servicio / Tecnología | Rol en la Arquitectura | Justificación Técnica |
+| :--- | :--- | :--- |
+| **Amazon API Gateway** | Puerta de enlace HTTP | Expone el endpoint `POST` público y desacopla al cliente de la lógica interna. |
+| **AWS Lambda (Python)** | Productor de eventos y tareas | Procesa el payload inicial, inyecta el atributo `Source` y ejecuta cada paso de negocio sin aprovisionar servidores. |
+| **Amazon EventBridge** | Bus de eventos y enrutador | Filtra eventos en tiempo real mediante la regla `source: ["demo.pedidos.tinavarela"]`, evitando colisiones en la cuenta compartida. |
+| **AWS Step Functions** | Orquestador de flujo (Workflow) | Coordina la secuencia (Validar ➔ Inventario ➔ Pago ➔ Confirmar ➔ Auditoría) con manejo visual de estados. |
+| **AWS IAM** | Seguridad y Gobernanza | Aplica el principio de mínimo privilegio mediante el rol específico `PutEvents` en el bus de eventos. |
+
+<details>
+  <summary><b>🔍 Ver estructura del Payload JSON y Evento de Prueba (Click para desplegar)</b></summary>
+  <br>
+
+**1. Petición enviada desde Postman (`POST`):**
+```json
+{
+  "cliente": "Johan",
+  "producto": "Laptop",
+  "cantidad": 1,
+  "total": 900
+}
+```
+
+**2. Evento aislado inyectado en Amazon EventBridge:**
+```json
+{
+  "Source": "demo.pedidos.tinavarela",
+  "DetailType": "NuevoPedido",
+  "EventBusName": "default"
+}
+```
+</details>
+
+---
 ---
 
 ## 1. Actualización de la Función Lambda (Aislamiento de Eventos)
@@ -36,3 +93,13 @@ Se presenta la prueba de integración final (End-to-End) desde el cliente HTTP P
 Esta evidencia final ilustra el diagrama de flujo de la máquina de estados (`step-tinavarela`) correspondiente a la ejecución del pedido aislado. La iluminación en verde de todos los nodos del flujo (tales como *ValidateOrder*, *CheckInventory* y *ProcessPayment*) hasta llegar al *SuccessState*, demuestra que el sistema procesó la lógica de negocio sin interrupciones ni desvíos hacia los estados de fallo. Esto comprueba el éxito absoluto de la implementación de la arquitectura *serverless*, logrando un flujo de eventos asíncrono, robusto y correctamente segmentado.
 
 ![Ejecución Exitosa Step Functions](./imagen3.lab.png)
+
+
+---
+<div align="center">
+  <sub>Desarrollado y documentado por <b>Tina Varela</b> — Cloud Architecture & Software Development</sub>
+  <br><br>
+  <a href="https://github.com/tinapavare">
+    <img src="https://img.shields.io/badge/GitHub-tinapavare-1E293B?style=flat-square&logo=github" />
+  </a>
+</div>
