@@ -7,7 +7,7 @@
 
 A continuación, se presenta el diagrama de arquitectura diseñado para esta solución, el cual ilustra el flujo de eventos desde la petición HTTP inicial hasta el procesamiento asíncrono en la máquina de estados, destacando el aislamiento del entorno.
 
-![Diagrama de Arquitectura Serverless](./arquitecturaserverless%20(2).png)
+![Diagrama de Arquitectura Serverless](./arquitectura-serverless.drawio.svg)
 
 ---
 
